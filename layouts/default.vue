@@ -96,9 +96,9 @@ import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
+      // clipped: false,
+      // drawer: false,
+      // fixed: false,
       items: [
         {
           icon: 'mdi-apps',
@@ -111,9 +111,9 @@ export default {
           to: '/inspire'
         }
       ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
+      // miniVariant: false,
+      // right: true,
+      // rightDrawer: false,
       title: 'Nuxt.js/Vuetify.js',
       dialog: false,
       credentials: {
@@ -162,6 +162,16 @@ export default {
   computed: {
     user() {
       return this.$store.getters['auth/loggedInUser']
+    },
+
+    drawer: {
+      get() {
+        return this.$store.state.navigation.drawer
+      },
+
+      set(val) {
+        return this.$store.commit('navigation/setDrawer', val)
+      }
     }
   },
 

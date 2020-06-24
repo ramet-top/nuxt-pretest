@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt --port=3001",
+    "dev:nodemon": "nodemon --watch api --exec \"nuxt\" --port=3001",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"
@@ -21,6 +22,7 @@
     "@nuxtjs/vuetify": "^1.11.2",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-prettier": "^3.0.1",
+    "nodemon": "^2.0.4",
     "prettier": "^1.16.4"
   }
 }
