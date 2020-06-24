@@ -138,11 +138,15 @@ export default {
       }
     },
 
-    edit() {
-      this.setUser(this.credentials)
-      console.log('edit name', this.credentials)
-      this.dialog = false
-      Swal.fire('Good job!', 'You clicked the button!', 'success')
+    async edit() {
+      try {
+        await this.setUser(this.credentials)
+        this.dialog = false
+        await Swal.fire('Good job!', 'You clicked the button!', 'success')
+        this.$router.go('.')
+      } catch (error) {
+        throw error
+      }
     },
 
     getName() {
@@ -161,7 +165,7 @@ export default {
     }
   },
 
-  created() {
+  mounted() {
     this.getName()
   }
 }
