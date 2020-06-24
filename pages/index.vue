@@ -14,29 +14,24 @@
             <Notification :message="error" v-if="error" />
           </h3>
 
-          <v-form @submit.prevent.stop="login">
+          <v-form @submit.prevent="login" ref="form">
             <v-card-text>
               <v-text-field
-                label="ชื่อเล่น"
                 prepend-icon="fas fa-user-lock"
-                v-model.trim="credentials.identifier"
+                v-model.trim="credentials.name"
                 type="text"
                 :rules="[rules.required, rules.min]"
+                label="ชื่อเล่น"
+                placeholder="ชื่อเล่น `John`"
+                outlined
+                dense
                 autofocus
-                requireed
               ></v-text-field>
 
               <div class="text-center">
                 <v-row>
                   <v-col col="12">
-                    <v-btn
-                      type="submit"
-                      @keyup.enter="submit"
-                      rounded
-                      block
-                      color="primary"
-                      large
-                    >
+                    <v-btn type="submit" rounded block color="primary" large>
                       <v-icon left>fas fa-sign-in-alt</v-icon>ตกลง
                     </v-btn>
                   </v-col>
@@ -61,8 +56,10 @@
 <script>
 import Notification from '~/components/Notification'
 import Logo from '~/components/Logo.vue'
+import { mapMutations } from 'vuex'
 export default {
   layout: 'index-layout',
+  middleware: 'isNotAuth',
   head() {
     return {
       title: 'เข้าสู่ระบบ'
@@ -75,15 +72,15 @@ export default {
   // middleware: 'guest',
   data() {
     return {
-      btnDis: false,
+      // btnDis: false,
       submitting: false,
       error: null,
       credentials: {
-        identifier: ''
+        name: ''
         // password: '123456789'
       },
 
-      show1: false,
+      // show1: false,
       rules: {
         required: value => !!value || 'กรุณากรอกข้อมูล!',
         min: v => v.length >= 2 || 'Min 2 characters'
@@ -92,37 +89,23 @@ export default {
   },
 
   methods: {
-    login() {
-      // try {
-      //   await this.$auth.loginWith('local', {
-      //     data: {
-      //       email: this.email,
-      //       password: this.password
-      //     }
-      //   })
+    ...mapMutations({
+      setUser: 'auth/setUser'
+    }),
 
-      //   this.$router.push('/')
-      // } catch (e) {
-      //   this.error = e.response.data.message
-      // }
-      console.log('test login')
-      // if (rules) {
-      //   this.$router.push('/lists')
-      // }
+    async login() {
+      try {
+        if (this.$refs.form.validate()) {
+          await this.setUser(this.credentials)
+          this.$router.push('/lists')
+          // console.log('valid', tthis.$refs.form.validate())
+        } else {
+          return alert('กรุรากรอกข้อมูลให้ครบ')
+        }
+      } catch (err) {
+        alert(err.message || 'An error occurred.')
+      }
     }
-
-    // computed: {
-    //   btnDisable() {
-    //     if (
-    //       this.credentials.identifier == '' ||
-    //       this.credentials.password == ''
-    //     ) {
-    //       return (this.btnDis = true)
-    //     } else {
-    //       return (this.btnDis = false)
-    //     }
-    //   }
-    // }
   }
 }
 </script>

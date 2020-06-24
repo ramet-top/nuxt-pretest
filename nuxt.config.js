@@ -17,7 +17,13 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      // sweetAlert2
+      {
+        src: 'https://cdn.jsdelivr.net/npm/sweetalert2@9'
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
