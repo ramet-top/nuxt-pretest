@@ -96,25 +96,6 @@ import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
-      // clipped: false,
-      // drawer: false,
-      // fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      // miniVariant: false,
-      // right: true,
-      // rightDrawer: false,
-      title: 'Nuxt.js/Vuetify.js',
       dialog: false,
       credentials: {
         name: ''
@@ -172,6 +153,26 @@ export default {
       set(val) {
         return this.$store.commit('navigation/setDrawer', val)
       }
+    },
+
+    title() {
+      return this.$store.state.navigation.title
+    },
+
+    items() {
+      return this.$store.state.navigation.items
+    },
+
+    fixed() {
+      return this.$store.state.navigation.fixed
+    },
+
+    clipped() {
+      return this.$store.state.navigation.clipped
+    },
+
+    miniVariant() {
+      return this.$store.state.navigation.miniVariant
     }
   },
 

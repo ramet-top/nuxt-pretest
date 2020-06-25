@@ -3,17 +3,14 @@
     <v-flex>
       <div class="text-center">
         <img src="/v.png" alt="Vuetify.js" class="mb-5" />
-        <blockquote class="blockquote">
-          <footer>
-            <h1>รายชื่อลูกค้า</h1>
-          </footer>
-        </blockquote>
+
+        <h1>รายชื่อลูกค้า</h1>
       </div>
 
       <v-data-table
         :headers="headers"
         :items="desserts"
-        sort-by="calories"
+        sort-by="age"
         class="elevation-1"
       >
         <template v-slot:top>
@@ -29,7 +26,7 @@
                   class="mb-2"
                   v-bind="attrs"
                   v-on="on"
-                  >New Item</v-btn
+                  >เพิ่มข้อมูล</v-btn
                 >
               </template>
               <v-card>
@@ -40,44 +37,75 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-                      <v-col cols="12" sm="6" md="4">
+                      <!-- <v-col cols="12" sm="6" md="4">
                         <v-text-field
                           v-model="editedItem.id"
                           label="id"
                           disabled
                         ></v-text-field>
-                      </v-col>
+                      </v-col> -->
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.name"
-                          label="ชื่อ-นามสกุล"
+                          v-model="editedItem.first_name"
+                          label="ชื่อ"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.calories"
+                          v-model="editedItem.last_name"
+                          label="นามสกุล"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.age"
                           label="อายุ"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.fat"
+                      <v-col cols="12" sm="6" md="12">
+                        <!-- <v-text-field
+                          v-model="editedItem.sex"
                           label="เพศ"
+                        ></v-text-field> -->
+                        <p>เพศ</p>
+                        <v-radio-group v-model="editedItem.sex" row>
+                          <v-radio label="ชาย" value="M"></v-radio>
+                          <v-radio label="หญิง" value="F"></v-radio>
+                        </v-radio-group>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.email"
+                          label="email"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.carbs"
-                          label="สถานะ"
+                          v-model="editedItem.tel"
+                          label="เบอร์โทร"
                         ></v-text-field>
                       </v-col>
-
-                      <!-- <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.protein"
-                          label="Protein (g)"
-                        ></v-text-field>
-                      </v-col> -->
+                      <v-col cols="12" sm="6" md="4">
+                        <v-select
+                          v-model="editedItem.status"
+                          :items="items"
+                          item-text="text"
+                          item-value="state"
+                          persistent-hint
+                          return-object
+                          label="สถานะ"
+                        ></v-select>
+                        <!-- showstate: {{ editedItem.status.state }} -->
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-textarea
+                          v-model="editedItem.remark"
+                          label="remark"
+                          hint="แสดงความเห็น"
+                        ></v-textarea>
+                      </v-col>
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -94,10 +122,40 @@
           </v-toolbar>
         </template>
 
-        <template v-slot:item.carbs="{ item }">
-          <v-chip :color="getColor(item.carbs)" dark>{{ item.carbs }}</v-chip>
+        <!-- firstname and lastname -->
+        <template v-slot:item.first_name="{ item }">
+          <nuxt-link
+            :to="{
+              name: 'lists-id',
+              params: { id: item.id }
+            }"
+            tag="a"
+            class="black--text text-decoration-none"
+          >
+            {{ item.first_name }} {{ item.last_name }}
+          </nuxt-link>
         </template>
 
+        <!-- redios sex -->
+        <template v-slot:item.sex="{ item }">
+          {{ item.sex == 'M' ? 'ชาย' : 'หญิง' }}
+        </template>
+
+        <!-- status color-->
+        <template v-slot:item.status="{ item }">
+          <div v-if="item.status == 'active' || item.status == 'deactive'">
+            <v-chip :color="getColor(item.status)" dark>
+              {{ item.status == 'active' ? 'เปิดใช้งาน' : 'ปิดใช้งาน' }}
+            </v-chip>
+          </div>
+          <div v-else>
+            <v-chip :color="getColor(item.status.state)" dark>
+              {{ item.status.state == 'active' ? 'เปิดใช้งาน' : 'ปิดใช้งาน' }}
+            </v-chip>
+          </div>
+        </template>
+
+        <!-- action -->
         <template v-slot:item.actions="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             fas fa-pencil-alt
@@ -106,6 +164,7 @@
             fas fa-trash
           </v-icon>
         </template>
+
         <template v-slot:no-data>
           <v-btn color="primary" @click="initialize">Reset</v-btn>
         </template>
@@ -130,32 +189,50 @@ export default {
         text: 'ชื่อ-นามสกุล',
         align: 'start',
         sortable: false,
-        value: 'name'
+        value: 'first_name'
       },
-      { text: 'อายุ', value: 'calories' },
-      { text: 'เพศ', value: 'fat' },
-      { text: 'สถานะ', value: 'carbs' },
-      // { text: 'Protein (g)', value: 'protein' },
+      { text: 'อายุ', value: 'age' },
+      { text: 'เพศ', value: 'sex' },
+      { text: 'สถานะ', value: 'status' },
+      // { text: 'remark (g)', value: 'remark' },
       { text: 'การจัดการ', value: 'actions', sortable: false }
     ],
+
     desserts: [],
     editedIndex: -1,
     editedItem: {
       id: '',
+      first_name: '',
+      last_name: '',
       name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0
-      // protein: 0
+      age: 0,
+      sex: 'M',
+      email: '',
+      tel: '',
+      status: 'deactive',
+      remark: ''
     },
+
     defaultItem: {
       id: '',
+      first_name: '',
+      last_name: '',
       name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0
-      // protein: 0
-    }
+      age: 0,
+      sex: 'M',
+      email: '',
+      tel: '',
+      status: 'deactive',
+      remark: ''
+    },
+
+    // select: { status: 'active' },
+    items: [
+      { state: 'active', text: 'เปิดใช้งาน' },
+      { state: 'deactive', text: 'ปิดใช้งาน' }
+    ],
+
+    valRadio: 'M'
   }),
 
   computed: {
@@ -183,83 +260,103 @@ export default {
       this.desserts = [
         {
           id: 1,
+          first_name: 'Frozen',
+          last_name: 'Yogurt',
           name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0
+          age: 20,
+          sex: 'M',
+          email: '',
+          tel: '0990009090',
+          status: 'active',
+          remark: ''
         },
         {
           id: 2,
+          first_name: 'Ice cream',
+          last_name: 'sandwich',
           name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3
+          age: 27,
+          sex: 'F',
+          email: '',
+          tel: '',
+          status: 'active',
+          remark: ''
         },
         {
           id: 3,
+          first_name: 'Eclair',
+          last_name: 'Eclairer',
           name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0
+          age: 26,
+          sex: 'M',
+          email: '',
+          tel: '',
+          status: 'active',
+          remark: ''
         },
         {
           id: 4,
+          first_name: 'Cupcake',
+          last_name: 'pi ',
           name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3
+          age: 30,
+          sex: 'M',
+          email: '',
+          tel: '',
+          status: 'deactive',
+          remark: ''
         },
         {
           id: 5,
+          first_name: 'Gingerbread',
+          last_name: 'sweet ',
           name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9
+          age: 56,
+          sex: 'F',
+          email: '',
+          tel: '',
+          status: 'deactive',
+          remark: ''
         }
         // {
         //   id: 6,
         //   name: 'Jelly bean',
-        //   calories: 375,
-        //   fat: 0.0,
-        //   carbs: 94,
-        //   protein: 0.0
+        //   age: 375,
+        //   sex: 0.0,
+        //   status: 94,
+        //   remark: 0.0
         // },
         // {
         //   id: 7,
         //   name: 'Lollipop',
-        //   calories: 392,
-        //   fat: 0.2,
-        //   carbs: 98,
-        //   protein: 0
+        //   age: 392,
+        //   sex: 0.2,
+        //   status: 98,
+        //   remark: 0
         // },
         // {
         //   id: 8,
         //   name: 'Honeycomb',
-        //   calories: 408,
-        //   fat: 3.2,
-        //   carbs: 87,
-        //   protein: 6.5
+        //   age: 408,
+        //   sex: 3.2,
+        //   status: 87,
+        //   remark: 6.5
         // },
         // {
         //   id: 9,
         //   name: 'Donut',
-        //   calories: 452,
-        //   fat: 25.0,
-        //   carbs: 51,
-        //   protein: 4.9
+        //   age: 452,
+        //   sex: 25.0,
+        //   status: 51,
+        //   remark: 4.9
         // },
         // {
         //   id: 10,
         //   name: 'KitKat',
-        //   calories: 518,
-        //   fat: 26.0,
-        //   carbs: 65,
-        //   protein: 7
+        //   age: 518,
+        //   sex: 26.0,
+        //   status: 65,
+        //   remark: 7
         // }
       ]
     },
@@ -277,7 +374,7 @@ export default {
 
       Swal.fire({
         title: 'Are you sure?',
-        text: `Are you sure you want to delete this item ${item.name}?`,
+        text: `คุณต้องการที่จะลบข้อมูลของ ${item.name} ใชหรือไม่ ?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -302,6 +399,7 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
+
         let timerInterval
         Swal.fire({
           title: 'Updated!',
@@ -336,9 +434,8 @@ export default {
     },
 
     getColor(status) {
-      if (status > 400) return 'red'
-      else if (status > 200) return 'orange'
-      else return 'green'
+      if (status == 'active') return 'green'
+      else return 'red'
     }
   }
 }

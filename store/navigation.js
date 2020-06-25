@@ -1,15 +1,48 @@
 export const state = () => ({
-  counter: 0,
-  drawer: false
+  clipped: false,
+  miniVariant: false,
+  drawer: false,
+  title: 'Nuxt.js/Vuetify.js',
+
+  items: [
+    {
+      icon: 'fas fa-home',
+      title: 'Welcome',
+      to: '/'
+    },
+    {
+      icon: 'fas fa-swatchbook',
+      title: 'Public Page',
+      to: '/inspire'
+    },
+    {
+      icon: 'fas fa-users',
+      title: 'Lists User',
+      to: '/lists'
+    },
+    {
+      icon: 'fas fa-user',
+      title: 'Single Detail',
+      to: '/lists/:id'
+    }
+  ],
+
+  credentials: {
+    name: ''
+    // password: '123456789'
+  },
+
+  fixed: false
 })
 
 export const mutations = {
-  increment(state) {
-    state.counter++
-  },
-
   setDrawer(state, nawDrawerState) {
     state.drawer = nawDrawerState
-    console.log('state new drawer', nawDrawerState)
+    // console.log('state new drawer', nawDrawerState)
+  },
+
+  setCredentials(state, newCredentialsState) {
+    state.credentials.name = newCredentialsState
+    console.log('state new newCredentialsState', newCredentialsState)
   }
 }
