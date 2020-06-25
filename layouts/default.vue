@@ -151,6 +151,7 @@ export default {
       },
 
       set(val) {
+        console.log('drawer state:', val)
         return this.$store.commit('navigation/setDrawer', val)
       }
     },
