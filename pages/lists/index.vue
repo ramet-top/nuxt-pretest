@@ -3,8 +3,7 @@
     <clientOnly>
       <v-flex>
         <div class="text-center">
-          <img src="/v.png" alt="Vuetify.js" class="mb-5" />
-
+          <vuetify-logo />
           <h1>รายชื่อลูกค้า</h1>
           <!-- uuid test:: {{ defaultItem.id }} -->
         </div>
@@ -20,6 +19,7 @@
               <v-toolbar-title>CRUD Users</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
+
               <v-dialog v-model="dialog" max-width="500px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -65,10 +65,6 @@
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="12">
-                          <!-- <v-text-field
-                          v-model="editedItem.sex"
-                          label="เพศ"
-                        ></v-text-field> -->
                           <p>เพศ</p>
                           <v-radio-group v-model="editedItem.sex" row>
                             <v-radio label="ชาย" value="M"></v-radio>
@@ -97,9 +93,9 @@
                             return-object
                             label="สถานะ"
                           ></v-select>
-                          <!-- showstate: {{ editedItem.status.state }} -->
                         </v-col>
                       </v-row>
+
                       <v-row>
                         <v-col cols="12">
                           <v-textarea
@@ -121,6 +117,9 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+
+              <!-- <CreateUserDialog /> -->
+              <!-- <CreateUserDialog :editedItem="item" /> -->
             </v-toolbar>
           </template>
 
@@ -159,6 +158,9 @@
 
           <!-- action -->
           <template v-slot:item.actions="{ item }">
+            <!-- <v-icon small class="mr-2" @click="editItem(item)">
+              fas fa-pencil-alt
+            </v-icon> -->
             <v-icon small class="mr-2" @click="editItem(item)">
               fas fa-pencil-alt
             </v-icon>
@@ -176,10 +178,17 @@
   </v-layout>
 </template>
 <script>
+import VuetifyLogo from '~/components/logo/VuetifyLogo.vue'
+import CreateUserDialog from '~/components/dialog/CreateUserDialog.vue'
 import { uuid } from 'vue-uuid'
 
 export default {
   middleware: 'isAuth',
+
+  components: {
+    VuetifyLogo,
+    CreateUserDialog
+  },
 
   head() {
     return {
@@ -224,7 +233,9 @@ export default {
     },
 
     formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.$store.state.items.editedIndex === -1
+        ? 'New Item'
+        : 'Edit Item'
     },
 
     headers() {
@@ -254,10 +265,8 @@ export default {
 
   methods: {
     editItem(item) {
-      this.$store.commit(
-        'items/setEditedIndex',
-        this.$store.state.items.desserts.indexOf(item)
-      )
+      let valItem = this.$store.state.items.desserts.indexOf(item)
+      this.$store.commit('items/setEditedIndex', valItem)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },

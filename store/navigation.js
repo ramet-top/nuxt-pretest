@@ -43,6 +43,6 @@ export const mutations = {
 
   setCredentials(state, newCredentialsState) {
     state.credentials.name = newCredentialsState
-    console.log('state new newCredentialsState', newCredentialsState)
+    // console.log('state new newCredentialsState', newCredentialsState)
   }
 }

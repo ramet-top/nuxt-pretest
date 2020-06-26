@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import Notification from '~/components/Notification'
-import Logo from '~/components/Logo.vue'
+import Notification from '~/components/alert/Notification'
+import Logo from '~/components/logo/Logo.vue'
 import { mapMutations } from 'vuex'
 export default {
   layout: 'index-layout',
