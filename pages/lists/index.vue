@@ -39,13 +39,13 @@
                   <v-card-text>
                     <v-container>
                       <v-row>
-                        <v-col cols="12" sm="6" md="4">
+                        <!-- <v-col cols="12" sm="6" md="4">
                           <v-text-field
                             v-model="editedItem.id"
                             label="Test-uuid"
                             disabled
                           ></v-text-field>
-                        </v-col>
+                        </v-col> -->
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
                             v-model="editedItem.first_name"
@@ -118,7 +118,6 @@
                 </v-card>
               </v-dialog>
 
-              <!-- <CreateUserDialog /> -->
               <!-- <CreateUserDialog :editedItem="item" /> -->
             </v-toolbar>
           </template>
@@ -158,9 +157,6 @@
 
           <!-- action -->
           <template v-slot:item.actions="{ item }">
-            <!-- <v-icon small class="mr-2" @click="editItem(item)">
-              fas fa-pencil-alt
-            </v-icon> -->
             <v-icon small class="mr-2" @click="editItem(item)">
               fas fa-pencil-alt
             </v-icon>

@@ -123,19 +123,14 @@
                   hint="แสดงความเห็น"
                 ></v-textarea>
               </v-col>
+              <v-col>
+                {{ filteredList['0'].status }}
+              </v-col>
             </v-row>
           </v-container>
         </v-form>
         <v-divider></v-divider>
         <v-card-actions>
-          <!-- <v-switch
-            v-model="autoUpdate"
-            disabled
-            class="mt-0"
-            color="green lighten-2"
-            hide-details
-            label="Auto Update"
-          ></v-switch> -->
           <v-btn
             :loading="isUpdating"
             depressed
@@ -146,25 +141,24 @@
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn
-            :disabled="autoUpdate"
+            color="blue"
             :loading="isUpdating"
             depressed
             @click="isUpdating = true"
           >
             <v-icon left>far fa-edit</v-icon>
-            Update Now::
-            {{ filteredList['0'].status }}
+            Update
           </v-btn>
           <!-- <CreateUserDialog :editedItem="filteredList" /> -->
 
           <v-btn
             :loading="isUpdating"
-            color="red"
             depressed
+            color="red accent-4"
             @click="deleteItem(filteredList['0'])"
           >
             <v-icon left>fas fa-trash</v-icon>
-            Delete Now
+            Delete
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -212,7 +206,7 @@ export default {
     },
 
     async deleteItem(item) {
-      await this.$router.push('/')
+      await this.$router.replace('/lists')
       this.$store.commit('items/deleteItem', item)
     }
   },
