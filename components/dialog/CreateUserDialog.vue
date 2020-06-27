@@ -42,7 +42,7 @@
               <v-col cols="12" sm="6" md="12">
                 <p>เพศ</p>
                 <v-radio-group v-model="editedItem.sex" row>
-                  <v-radio label="ชาย" value="M"></v-radio>
+                  <v-radio labe l="ชาย" value="M"></v-radio>
                   <v-radio label="หญิง" value="F"></v-radio>
                 </v-radio-group>
               </v-col>
@@ -74,14 +74,12 @@
             <v-row>
               <v-col cols="12">
                 <v-textarea
-                  v-model="editedItem.remark"
+                  :value="editedItem.remark"
                   label="remark"
                   hint="แสดงความเห็น"
                 ></v-textarea>
               </v-col>
             </v-row>
-
-            props::{{ editedItem }}
           </v-container>
         </v-card-text>
 
@@ -97,38 +95,38 @@
 
 <script>
 import { uuid } from 'vue-uuid'
+// import DialogGlobalFunction from '~/mixins/dialog-global-functoin'
 
 export default {
+  // mixins: [DialogGlobalFunction],
   data() {
     return {
-      editedItem: {
-        id: '',
-        first_name: '',
-        last_name: '',
-        age: 0,
-        sex: 'M',
-        email: '',
-        tel: '',
-        status: 'deactive',
-        remark: ''
-      },
-
-      defaultItem: {
-        id: uuid.v4(),
-        first_name: '',
-        last_name: '',
-        age: 0,
-        sex: 'M',
-        email: '',
-        tel: '',
-        status: 'deactive',
-        remark: ''
-      },
-
-      items: [
-        { state: 'active', text: 'เปิดใช้งาน' },
-        { state: 'deactive', text: 'ปิดใช้งาน' }
-      ]
+      // editedItem: {
+      //   id: '',
+      //   first_name: '',
+      //   last_name: '',
+      //   age: 0,
+      //   sex: 'M',
+      //   email: '',
+      //   tel: '',
+      //   status: 'deactive',
+      //   remark: ''
+      // },
+      // defaultItem: {
+      //   id: uuid.v4(),
+      //   first_name: '',
+      //   last_name: '',
+      //   age: 0,
+      //   sex: 'M',
+      //   email: '',
+      //   tel: '',
+      //   status: 'deactive',
+      //   remark: ''
+      // },
+      // items: [
+      //   { state: 'active', text: 'เปิดใช้งาน' },
+      //   { state: 'deactive', text: 'ปิดใช้งาน' }
+      // ]
     }
   },
 
@@ -138,7 +136,9 @@ export default {
         ? 'New Item'
         : 'Edit Item'
     },
-
+    desserts() {
+      return this.$store.state.items.desserts || []
+    },
     dialog: {
       get() {
         return this.$store.state.items.dialog
@@ -147,40 +147,40 @@ export default {
       set(val) {
         return this.$store.commit('items/setDialog', val)
       }
-    },
-
-    desserts() {
-      return this.$store.state.items.desserts || []
     }
   },
 
-  // watch: {
-  //   dialog(val) {
-  //     val || this.close()
-  //   }
-  // },
+  watch: {
+    dialog(val) {
+      val || this.close()
+    }
+  },
 
   methods: {
-    // editItem(item) {
-    //   let valItem = this.$store.state.items.desserts.indexOf(item)
-    //   this.$store.commit('items/setEditedIndex', valItem)
-    //   this.editedItem = Object.assign({}, item)
-    //   this.dialog = true
-    // },
-    // deleteItem(item) {
-    //   this.$store.commit('items/deleteItem', item)
-    // },
-    // close() {
-    //   this.dialog = false
-    //   this.$nextTick(() => {
-    //     this.editedItem = Object.assign({}, this.defaultItem)
-    //     this.$store.commit('items/setEditedIndex', -1)
-    //   })
-    // },
-    // save() {
-    //   this.$store.commit('items/save', this.editedItem)
-    //   this.close()
-    // }
+    editItem(item) {
+      let valItem = this.$store.state.items.desserts.indexOf(item)
+      this.$store.commit('items/setEditedIndex', valItem)
+
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
+    },
+
+    deleteItem(item) {
+      this.$store.commit('items/deleteItem', item)
+    },
+
+    close() {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.$store.commit('items/setEditedIndex', -1)
+      })
+    },
+
+    save() {
+      this.$store.commit('items/save', this.editedItem)
+      this.close()
+    }
   }
 }
 </script>

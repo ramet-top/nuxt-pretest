@@ -28,8 +28,9 @@
                     class="mb-2"
                     v-bind="attrs"
                     v-on="on"
-                    >เพิ่มข้อมูล</v-btn
                   >
+                    เพิ่มข้อมูล
+                  </v-btn>
                 </template>
                 <v-card>
                   <v-card-title>
@@ -67,7 +68,7 @@
                         <v-col cols="12" sm="6" md="12">
                           <p>เพศ</p>
                           <v-radio-group v-model="editedItem.sex" row>
-                            <v-radio label="ชาย" value="M"></v-radio>
+                            <v-radio labe l="ชาย" value="M"></v-radio>
                             <v-radio label="หญิง" value="F"></v-radio>
                           </v-radio-group>
                         </v-col>
@@ -118,7 +119,7 @@
                 </v-card>
               </v-dialog>
 
-              <!-- <CreateUserDialog :editedItem="item" /> -->
+              <!-- <CreateUserDialog /> -->
             </v-toolbar>
           </template>
 
@@ -143,16 +144,9 @@
 
           <!-- status color-->
           <template v-slot:item.status="{ item }">
-            <div v-if="item.status == 'active' || item.status == 'deactive'">
-              <v-chip :color="getColor(item.status)" dark>
-                {{ item.status == 'active' ? 'เปิดใช้งาน' : 'ปิดใช้งาน' }}
-              </v-chip>
-            </div>
-            <div v-else>
-              <v-chip :color="getColor(item.status.state)" dark>
-                {{ item.status.state == 'active' ? 'เปิดใช้งาน' : 'ปิดใช้งาน' }}
-              </v-chip>
-            </div>
+            <v-chip :color="getColor(item.status)" dark>
+              {{ item.status.state == 'active' ? 'เปิดใช้งาน' : 'ปิดใช้งาน' }}
+            </v-chip>
           </template>
 
           <!-- action -->
@@ -175,15 +169,14 @@
 </template>
 <script>
 import VuetifyLogo from '~/components/logo/VuetifyLogo.vue'
-import CreateUserDialog from '~/components/dialog/CreateUserDialog.vue'
-import { uuid } from 'vue-uuid'
+import DialogGlobalFunction from '~/mixins/dialog-global-functoin'
 
 export default {
   middleware: 'isAuth',
+  mixins: [DialogGlobalFunction],
 
   components: {
-    VuetifyLogo,
-    CreateUserDialog
+    VuetifyLogo
   },
 
   head() {
@@ -192,100 +185,21 @@ export default {
     }
   },
 
-  data: () => ({
-    editedItem: {
-      id: '',
-      first_name: '',
-      last_name: '',
-      age: 0,
-      sex: 'M',
-      email: '',
-      tel: '',
-      status: 'deactive',
-      remark: ''
-    },
-
-    defaultItem: {
-      id: uuid.v4(),
-      first_name: '',
-      last_name: '',
-      age: 0,
-      sex: 'M',
-      email: '',
-      tel: '',
-      status: 'deactive',
-      remark: ''
-    },
-
-    items: [
-      { state: 'active', text: 'เปิดใช้งาน' },
-      { state: 'deactive', text: 'ปิดใช้งาน' }
-    ]
-  }),
+  data: () => ({}),
 
   computed: {
     user() {
       return this.$store.getters['auth/loggedInUser']
     },
 
-    formTitle() {
-      return this.$store.state.items.editedIndex === -1
-        ? 'New Item'
-        : 'Edit Item'
-    },
-
     headers() {
       return this.$store.state.items.headers
-    },
-
-    desserts() {
-      return this.$store.state.items.desserts || []
-    },
-
-    dialog: {
-      get() {
-        return this.$store.state.items.dialog
-      },
-
-      set(val) {
-        return this.$store.commit('items/setDialog', val)
-      }
-    }
-  },
-
-  watch: {
-    dialog(val) {
-      val || this.close()
     }
   },
 
   methods: {
-    editItem(item) {
-      let valItem = this.$store.state.items.desserts.indexOf(item)
-      this.$store.commit('items/setEditedIndex', valItem)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-
-    deleteItem(item) {
-      this.$store.commit('items/deleteItem', item)
-    },
-
-    close() {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.$store.commit('items/setEditedIndex', -1)
-      })
-    },
-
-    save() {
-      this.$store.commit('items/save', this.editedItem)
-      this.close()
-    },
-
     getColor(status) {
-      if (status == 'active') return 'green'
+      if (status.state == 'active') return 'green'
       else return 'red'
     }
   }

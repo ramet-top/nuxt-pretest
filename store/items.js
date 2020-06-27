@@ -1,4 +1,4 @@
-// import uuid from 'vue-uuid'
+import uuid from 'vue-uuid'
 
 export const state = () => ({
   dialog: false,
@@ -24,7 +24,7 @@ export const state = () => ({
       sex: 'M',
       email: '',
       tel: '0990009090',
-      status: 'active',
+      status: { state: 'active', text: 'เปิดใช้งาน' },
       remark: ''
     },
     {
@@ -35,7 +35,7 @@ export const state = () => ({
       sex: 'F',
       email: '',
       tel: '',
-      status: 'active',
+      status: { state: 'active', text: 'เปิดใช้งาน' },
       remark: ''
     },
     {
@@ -46,7 +46,7 @@ export const state = () => ({
       sex: 'M',
       email: '',
       tel: '',
-      status: 'active',
+      status: { state: 'active', text: 'เปิดใช้งาน' },
       remark: ''
     },
     {
@@ -57,7 +57,7 @@ export const state = () => ({
       sex: 'M',
       email: '',
       tel: '',
-      status: 'deactive',
+      status: { state: 'deactive', text: 'ปิดใช้งาน' },
       remark: ''
     },
     {
@@ -68,7 +68,7 @@ export const state = () => ({
       sex: 'F',
       email: '',
       tel: '',
-      status: 'deactive',
+      status: { state: 'deactive', text: 'ปิดใช้งาน' },
       remark: ''
     }
   ]
@@ -85,6 +85,7 @@ export const mutations = {
   },
 
   // methods
+
   deleteItem(state, newStateItem) {
     const index = state.desserts.indexOf(newStateItem)
     confirm(
@@ -94,36 +95,13 @@ export const mutations = {
 
   save(state, newStateEditedItem) {
     if (state.editedIndex > -1) {
+      console.log('save if for update')
       Object.assign(state.desserts[state.editedIndex], newStateEditedItem)
-
-      let timerInterval
-      Swal.fire({
-        title: 'Updated!',
-        html: 'I will close in <b></b> milliseconds.',
-        timer: 1000,
-        timerProgressBar: true,
-        onBeforeOpen: () => {
-          Swal.showLoading()
-          timerInterval = setInterval(() => {
-            const content = Swal.getContent()
-            if (content) {
-              const b = content.querySelector('b')
-              if (b) {
-                b.textContent = Swal.getTimerLeft()
-              }
-            }
-          }, 100)
-        },
-        onClose: () => {
-          clearInterval(timerInterval)
-        }
-      }).then(result => {
-        /* Read more about handling dismissals below */
-        if (result.dismiss === Swal.DismissReason.timer) {
-          console.log('I was closed by the timer')
-        }
-      })
     } else {
+      console.log('save else for create')
+      if (newStateEditedItem) {
+        console.log('validata state else for create items')
+      }
       state.desserts.push(newStateEditedItem)
     }
   }

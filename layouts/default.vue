@@ -124,7 +124,7 @@ export default {
         await this.setUser(this.credentials)
         this.dialog = false
         await Swal.fire('Good job!', 'You clicked the button!', 'success')
-        this.$router.go('.')
+        this.$router.go('/')
       } catch (error) {
         throw error
       }
