@@ -22,7 +22,7 @@ export const state = () => ({
       last_name: 'Yogurt',
       age: 20,
       sex: 'M',
-      email: '',
+      email: 'moc1@gmail.com',
       tel: '0990009090',
       status: { state: 'active', text: 'เปิดใช้งาน' },
       remark: ''
@@ -33,8 +33,8 @@ export const state = () => ({
       last_name: 'sandwich',
       age: 27,
       sex: 'F',
-      email: '',
-      tel: '',
+      email: 'moc2@gmail.com',
+      tel: '0990009091',
       status: { state: 'active', text: 'เปิดใช้งาน' },
       remark: ''
     },
@@ -44,8 +44,8 @@ export const state = () => ({
       last_name: 'Eclairer',
       age: 26,
       sex: 'M',
-      email: '',
-      tel: '',
+      email: 'moc3@gmail.com',
+      tel: '0990009092',
       status: { state: 'active', text: 'เปิดใช้งาน' },
       remark: ''
     },
@@ -55,8 +55,8 @@ export const state = () => ({
       last_name: 'pi ',
       age: 30,
       sex: 'M',
-      email: '',
-      tel: '',
+      email: 'moc4@gmail.com',
+      tel: '0990009094',
       status: { state: 'deactive', text: 'ปิดใช้งาน' },
       remark: ''
     },
@@ -66,8 +66,8 @@ export const state = () => ({
       last_name: 'sweet ',
       age: 56,
       sex: 'F',
-      email: '',
-      tel: '',
+      email: 'moc5@gmail.com',
+      tel: '0990009093',
       status: { state: 'deactive', text: 'ปิดใช้งาน' },
       remark: ''
     }
@@ -95,13 +95,13 @@ export const mutations = {
 
   save(state, newStateEditedItem) {
     if (state.editedIndex > -1) {
-      console.log('save if for update')
+      // console.log('save if for update')
       Object.assign(state.desserts[state.editedIndex], newStateEditedItem)
     } else {
-      console.log('save else for create')
-      if (newStateEditedItem) {
-        console.log('validata state else for create items')
-      }
+      // console.log('save else for create')
+      // if (newStateEditedItem) {
+      //   console.log('validata state else for create items')
+      // }
       state.desserts.push(newStateEditedItem)
     }
   }

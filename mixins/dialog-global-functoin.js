@@ -14,7 +14,7 @@ export default {
         sex: 'M',
         email: '',
         tel: '',
-        status: { state: 'active', text: 'เปิดใช้งาน' },
+        status: { state: 'deactive', text: 'ปิดใช้งาน' },
         remark: ''
       },
 
@@ -33,6 +33,25 @@ export default {
       items: [
         { state: 'active', text: 'เปิดใช้งาน' },
         { state: 'deactive', text: 'ปิดใช้งาน' }
+      ],
+
+      valid: false,
+
+      requireRules: [v => !!v || 'กรุณากรอกข้อมูล!'],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+/.test(v) || 'E-mail must be valid'
+      ],
+      ageRules: [
+        v => v !== 0 || 'age must be valid value 0',
+        v => !!v || 'age is required',
+        v => /^[0-9]+$/.test(v) || 'age must be valid number 0-9 only'
+      ],
+      telRules: [
+        v => !!v || 'tel is required',
+        v =>
+          /^(([0-9]{10}))/.test(v) ||
+          'tel must be valid number 0-9 and 10 lenght only'
       ]
     }
   },
@@ -43,9 +62,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.$store.state.items.editedIndex === -1
-        ? 'New Item'
-        : 'Edit Item'
+      return this.$store.state.items.editedIndex === -1 ? 'NewItem' : 'EditItem'
     },
 
     desserts() {
@@ -90,9 +107,26 @@ export default {
     },
 
     save() {
-      
-      this.$store.commit('items/save', this.editedItem)
-      this.close()
+      if (this.formTitle == 'EditItem') {
+        // console.log('valid:', this.valid, 'title', this.formTitle)
+        this.$store.commit('items/save', this.editedItem)
+        this.close()
+      }
+
+      if (this.formTitle == 'NewItem') {
+        // console.log('valid:', this.valid, 'title', this.formTitle)
+        if (this.valid) {
+          this.$store.commit('items/save', this.editedItem)
+          this.close()
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'กรุณาเพิ่มข้อมูลให้ครบ!',
+            footer: '<a href>Why do I have this issue?</a>'
+          })
+        }
+      }
     }
   }
 }

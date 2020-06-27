@@ -172,33 +172,33 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col cols="12" sm="6" md="4">
+                    <!-- <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.id"
                         label="Test-uuid"
                         disabled
                       ></v-text-field>
-                    </v-col>
+                    </v-col> -->
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.first_name"
-                        label="ชื่อ"
+                        label="ชื่อ *"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.last_name"
-                        label="นามสกุล"
+                        label="นามสกุล *"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.age"
-                        label="อายุ"
+                        label="อายุ *"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="12">
-                      <p>เพศ</p>
+                      <p>เพศ *</p>
                       <v-radio-group v-model="editedItem.sex" row>
                         <v-radio labe l="ชาย" value="M"></v-radio>
                         <v-radio label="หญิง" value="F"></v-radio>
@@ -207,13 +207,13 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.email"
-                        label="email"
+                        label="email *"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.tel"
-                        label="เบอร์โทร"
+                        label="เบอร์โทร *"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
@@ -224,7 +224,7 @@
                         item-value="state"
                         persistent-hint
                         return-object
-                        label="สถานะ"
+                        label="สถานะ *"
                       ></v-select>
                     </v-col>
                   </v-row>
