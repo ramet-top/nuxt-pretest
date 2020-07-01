@@ -178,7 +178,7 @@ export default {
     },
 
     save() {
-      this.$store.commit('items/save', this.editedItem)
+      this.$store.commit('items/setSave', this.editedItem)
       this.close()
     }
   }

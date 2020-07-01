@@ -9,7 +9,6 @@
         <div class="container mb-5 px-5">
           <h3 class="text-center">
             <h1>กรุณากรอกข้อมูล</h1>
-            <Notification :message="error" v-if="error" />
           </h3>
 
           <v-form @submit.prevent="login" ref="form">
@@ -44,9 +43,8 @@
 </template>
 
 <script>
-import Notification from '~/components/alert/Notification'
 import Logo from '~/components/logo/Logo.vue'
-import { mapMutations } from 'vuex'
+
 export default {
   layout: 'index-layout',
   middleware: 'isNotAuth',
@@ -56,14 +54,11 @@ export default {
     }
   },
   components: {
-    Notification,
     Logo
   },
 
   data() {
     return {
-      submitting: false,
-      error: null,
       credentials: {
         name: ''
       },
@@ -76,20 +71,16 @@ export default {
   },
 
   methods: {
-    ...mapMutations({
-      setUser: 'auth/setUser'
-    }),
-
     async login() {
       try {
         if (this.$refs.form.validate()) {
-          await this.setUser(this.credentials)
+          await this.$store.dispatch('auth/setUser', this.credentials)
           this.$router.push('/lists')
         } else {
-          return alert('กรุรากรอกข้อมูลให้ครบ')
+          return alert('กรุณากรอกข้อมูลให้ครบ')
         }
       } catch (err) {
-        alert(err.message || 'An error occurred.')
+        throw err
       }
     }
   }

@@ -1,17 +1,5 @@
 export const state = () => ({
   dialog: false,
-  headers: [
-    {
-      text: 'ชื่อ-นามสกุล',
-      align: 'start',
-      sortable: false,
-      value: 'first_name'
-    },
-    { text: 'อายุ', value: 'age' },
-    { text: 'เพศ', value: 'sex' },
-    { text: 'สถานะ', value: 'status' },
-    { text: 'การจัดการ', value: 'actions', sortable: false }
-  ],
   editedIndex: -1,
   desserts: [
     {
@@ -73,28 +61,56 @@ export const state = () => ({
 })
 
 export const mutations = {
-  // data()
-  setDialog(state, newStateDialog) {
-    state.dialog = newStateDialog
+  SET_DIALOG(state, newDialogState) {
+    state.dialog = newDialogState
   },
 
-  setEditedIndex(state, newStateItem) {
+  SET_EDITED_INDEX(state, newStateItem) {
     state.editedIndex = newStateItem
   },
 
-  // methods
-  deleteItem(state, newStateItem) {
+  SET_DELETE_ITEM(state, newStateItem) {
     const index = state.desserts.indexOf(newStateItem)
     confirm(
       `คุณต้องการที่จะลบข้อมูลของ ${newStateItem.first_name} ใชหรือไม่ ?`
     ) && state.desserts.splice(index, 1)
   },
 
-  save(state, newStateEditedItem) {
+  SET_SAVE(state, newStateEditedItem) {
     if (state.editedIndex > -1) {
       Object.assign(state.desserts[state.editedIndex], newStateEditedItem)
     } else {
       state.desserts.push(newStateEditedItem)
     }
+  }
+}
+
+export const actions = {
+  setDialog({ commit }, newDialogState) {
+    commit('SET_DIALOG', newDialogState)
+  },
+  setEditedIndex({ commit }, newStateItem) {
+    commit('SET_EDITED_INDEX', newStateItem)
+  },
+  setDeleteItem({ commit }, newStateItem) {
+    commit('SET_DELETE_ITEM', newStateItem)
+  },
+  setSave({ commit }, newStateEditedItem) {
+    commit('SET_SAVE', newStateEditedItem)
+  }
+}
+
+export const getters = {
+  dialog: state => {
+    return state.dialog
+  },
+  drawer: state => {
+    return state.drawer
+  },
+  editedIndex: state => {
+    return state.editedIndex
+  },
+  desserts: state => {
+    return state.desserts
   }
 }

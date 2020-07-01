@@ -1,8 +1,14 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
+    <v-navigation-drawer v-model="drawer" fixed app>
       <v-list>
-        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          :to="item.to"
+          router
+          exact
+        >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -12,7 +18,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
+    <v-app-bar fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
 
@@ -34,14 +40,21 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field v-model="credentials.name" label="แก้ไขชื่อ" required autofocus></v-text-field>
+                    <v-text-field
+                      v-model="credentials.name"
+                      label="แก้ไขชื่อ"
+                      required
+                      autofocus
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
+              <v-btn color="blue darken-1" text @click="closeDialog"
+                >Close</v-btn
+              >
               <v-btn color="blue darken-1" text @click="edit">Save</v-btn>
             </v-card-actions>
           </v-card>
@@ -64,27 +77,15 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-
 export default {
   data() {
-    return {
-      dialog: false,
-      credentials: {
-        name: ''
-      }
-    }
+    return {}
   },
 
   methods: {
-    ...mapMutations({
-      logoutStore: 'auth/logout',
-      setUser: 'auth/setUser'
-    }),
-
     async logout() {
       try {
-        await this.logoutStore()
+        await this.$store.dispatch('auth/setUserLogout')
         this.$router.replace('/')
       } catch (error) {
         throw error
@@ -93,7 +94,7 @@ export default {
 
     async edit() {
       try {
-        await this.setUser(this.credentials)
+        await this.$store.dispatch('auth/setUser', this.credentials)
         this.dialog = false
         await Swal.fire('Good job!', 'You clicked the button!', 'success')
         this.$router.go('/')
@@ -119,32 +120,40 @@ export default {
 
     drawer: {
       get() {
-        return this.$store.state.navigation.drawer
+        return this.$store.getters['navigation/drawer']
       },
 
       set(val) {
-        return this.$store.commit('navigation/setDrawer', val)
+        return this.$store.dispatch('navigation/setDrawer', val)
+      }
+    },
+
+    dialog: {
+      get() {
+        return this.$store.getters['navigation/dialog']
+      },
+
+      set(val) {
+        return this.$store.dispatch('navigation/setDialog', val)
       }
     },
 
     title() {
-      return this.$store.state.navigation.title
+      return this.$store.getters['navigation/title']
     },
 
     items() {
-      return this.$store.state.navigation.items
+      return this.$store.getters['navigation/items']
     },
 
     fixed() {
-      return this.$store.state.navigation.fixed
+      return this.$store.getters['navigation/fixed']
     },
 
-    clipped() {
-      return this.$store.state.navigation.clipped
-    },
-
-    miniVariant() {
-      return this.$store.state.navigation.miniVariant
+    credentials() {
+      return {
+        name: ''
+      }
     }
   },
 
