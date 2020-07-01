@@ -29,6 +29,7 @@
                     >เพิ่มข้อมูล</v-btn
                   >
                 </template>
+
                 <v-card>
                   <v-card-title>
                     <span class="headline">{{ formTitle }}</span>
@@ -46,6 +47,7 @@
                               required
                             ></v-text-field>
                           </v-col>
+
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
                               v-model="editedItem.last_name"
@@ -54,6 +56,7 @@
                               required
                             ></v-text-field>
                           </v-col>
+
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
                               v-model="editedItem.age"
@@ -62,6 +65,7 @@
                               required
                             ></v-text-field>
                           </v-col>
+
                           <v-col cols="12" sm="6" md="12">
                             <p>เพศ *</p>
                             <v-radio-group v-model="editedItem.sex" row>
@@ -69,6 +73,7 @@
                               <v-radio label="หญิง" value="F"></v-radio>
                             </v-radio-group>
                           </v-col>
+
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
                               v-model="editedItem.email"
@@ -77,6 +82,7 @@
                               required
                             ></v-text-field>
                           </v-col>
+
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
                               v-model="editedItem.tel"
@@ -85,6 +91,7 @@
                               required
                             ></v-text-field>
                           </v-col>
+
                           <v-col cols="12" sm="6" md="4">
                             <v-select
                               v-model="editedItem.status"
@@ -120,10 +127,11 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+
+              <!-- <AppCreateAndUpDateUser @input="parentEditItem" /> -->
             </v-toolbar>
           </template>
 
-          <!-- firstname and lastname -->
           <template v-slot:item.first_name="{ item }">
             <nuxt-link
               :to="{
@@ -136,19 +144,16 @@
             >
           </template>
 
-          <!-- redios sex -->
           <template v-slot:item.sex="{ item }">{{
             item.sex == 'M' ? 'ชาย' : 'หญิง'
           }}</template>
 
-          <!-- status color-->
           <template v-slot:item.status="{ item }">
             <v-chip :color="getColor(item.status)" dark>{{
               item.status.state == 'active' ? 'เปิดใช้งาน' : 'ปิดใช้งาน'
             }}</v-chip>
           </template>
 
-          <!-- action -->
           <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)"
               >fas fa-pencil-alt</v-icon
@@ -167,6 +172,7 @@
 <script>
 import VuetifyLogo from '~/components/logo/VuetifyLogo.vue'
 import DialogGlobalFunction from '~/mixins/dialog-global-functoin'
+// import AppCreateAndUpDateUser from '~/components/lists/AppCreateAndUpdateUserDialog'
 
 export default {
   middleware: 'isAuth',
@@ -174,6 +180,7 @@ export default {
 
   components: {
     VuetifyLogo
+    // AppCreateAndUpDateUser
   },
 
   head() {
@@ -202,6 +209,19 @@ export default {
         { text: 'สถานะ', value: 'status' },
         { text: 'การจัดการ', value: 'actions', sortable: false }
       ]
+    },
+
+    // desserts() {
+    //   return this.$store.getters['items/desserts'] || []
+    // },
+
+    dialog: {
+      get() {
+        return this.$store.getters['items/dialog']
+      },
+      set(val) {
+        return this.$store.dispatch('items/setDialog', val)
+      }
     }
   },
 
@@ -211,8 +231,9 @@ export default {
       else return 'red'
     }
 
-    // initialize() {
-    //   // console.log('init')
+    // parentEditItem(value) {
+    //   this.dialog = true
+    //   console.log('parant Item:', value)
     // }
   }
 }

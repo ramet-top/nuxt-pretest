@@ -25,7 +25,7 @@ export default {
 
   methods: {
     parentFc(value) {
-      console.log('parentFc', value)
+      // console.log('parentFc', value)
       this.text = value
     },
 

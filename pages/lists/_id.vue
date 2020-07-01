@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex class="text-center">
       <vuetify-logo />
-      <div v-if="filteredList['0']">
+      <div v-if="filteredList">
         <v-card :loading="isUpdating">
           <template v-slot:progress>
             <v-progress-linear
@@ -16,32 +16,11 @@
             height="200"
             src="https://cdn.vuetifyjs.com/images/cards/dark-beach.jpg"
           >
-            <v-row>
-              <v-col class="text-right" cols="12">
-                <v-menu bottom left transition="slide-y-transition">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on">
-                      <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list>
-                    <v-list-item @click="isUpdating = true">
-                      <v-list-item-action>
-                        <v-icon>mdi-settings</v-icon>
-                      </v-list-item-action>
-                      <v-list-item-content>
-                        <v-list-item-title>Update</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
+            <v-row class="mt-15" align="center" justify="center">
+              <v-col class="text-center">
+                <h3 class="grey--text text--lighten-1">{{ name }}</h3>
+                <span class="grey--text text--lighten-1">{{ title }}</span>
               </v-col>
-              <v-row class="pa-4" align="center" justify="center">
-                <v-col class="text-center">
-                  <h3 class="grey--text text--lighten-1">{{ name }}</h3>
-                  <span class="grey--text text--lighten-1">{{ title }}</span>
-                </v-col>
-              </v-row>
             </v-row>
           </v-img>
           <v-form>
@@ -277,24 +256,17 @@ export default {
   },
 
   methods: {
-    remove(item) {
-      const index = this.friends.indexOf(item.name)
-      if (index >= 0) this.friends.splice(index, 1)
-    },
-
     async deleteItem(item) {
       await this.$router.replace('/lists')
-      this.$store.commit('items/deleteItem', item)
+      this.$store.dispatch('items/setDeleteItem', item)
     }
   },
 
   computed: {
-    filteredList: {
-      get() {
-        return this.desserts.filter(des => {
-          return des.id == this.$route.params.id
-        })
-      }
+    filteredList() {
+      return this.desserts.filter(des => {
+        return des.id == this.$route.params.id
+      })
     }
   }
 }

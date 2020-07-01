@@ -84,10 +84,6 @@ export default {
     }
   },
 
-  created() {
-    this.desserts
-  },
-
   methods: {
     editItem(item) {
       let valItem = this.desserts.indexOf(item)
