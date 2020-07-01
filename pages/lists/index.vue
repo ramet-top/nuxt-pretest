@@ -5,15 +5,9 @@
         <div class="text-center">
           <vuetify-logo />
           <h1>รายชื่อลูกค้า</h1>
-          <!-- uuid test:: {{ defaultItem.id }} -->
         </div>
 
-        <v-data-table
-          :headers="headers"
-          :items="desserts"
-          sort-by="age"
-          class="elevation-1"
-        >
+        <v-data-table :headers="headers" :items="desserts" sort-by="age" class="elevation-1">
           <template v-slot:top>
             <v-toolbar flat color="white">
               <v-toolbar-title>CRUD Users</v-toolbar-title>
@@ -22,15 +16,7 @@
 
               <v-dialog v-model="dialog" max-width="500px">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    color="primary"
-                    dark
-                    class="mb-2"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    เพิ่มข้อมูล
-                  </v-btn>
+                  <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">เพิ่มข้อมูล</v-btn>
                 </template>
                 <v-card>
                   <v-card-title>
@@ -41,13 +27,6 @@
                     <v-form v-model="valid">
                       <v-container>
                         <v-row>
-                          <!-- <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.id"
-                            label="Test-uuid"
-                            disabled
-                          ></v-text-field>
-                        </v-col> -->
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
                               v-model="editedItem.first_name"
@@ -123,15 +102,11 @@
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close"
-                      >Cancel</v-btn
-                    >
+                    <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
                     <v-btn color="blue darken-1" text @click="save">Save</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-
-              <!-- <CreateUserDialog /> -->
             </v-toolbar>
           </template>
 
@@ -144,31 +119,24 @@
               }"
               tag="a"
               class="black--text text-decoration-none"
-            >
-              {{ item.first_name }} {{ item.last_name }}
-            </nuxt-link>
+            >{{ item.first_name }} {{ item.last_name }}</nuxt-link>
           </template>
 
           <!-- redios sex -->
-          <template v-slot:item.sex="{ item }">
-            {{ item.sex == 'M' ? 'ชาย' : 'หญิง' }}
-          </template>
+          <template v-slot:item.sex="{ item }">{{ item.sex == 'M' ? 'ชาย' : 'หญิง' }}</template>
 
           <!-- status color-->
           <template v-slot:item.status="{ item }">
-            <v-chip :color="getColor(item.status)" dark>
-              {{ item.status.state == 'active' ? 'เปิดใช้งาน' : 'ปิดใช้งาน' }}
-            </v-chip>
+            <v-chip
+              :color="getColor(item.status)"
+              dark
+            >{{ item.status.state == 'active' ? 'เปิดใช้งาน' : 'ปิดใช้งาน' }}</v-chip>
           </template>
 
           <!-- action -->
           <template v-slot:item.actions="{ item }">
-            <v-icon small class="mr-2" @click="editItem(item)">
-              fas fa-pencil-alt
-            </v-icon>
-            <v-icon small @click="deleteItem(item)">
-              fas fa-trash
-            </v-icon>
+            <v-icon small class="mr-2" @click="editItem(item)">fas fa-pencil-alt</v-icon>
+            <v-icon small @click="deleteItem(item)">fas fa-trash</v-icon>
           </template>
 
           <template v-slot:no-data>

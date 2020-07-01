@@ -6,7 +6,6 @@ export const actions = {
     if (req && req.headers && req.headers.cookie) {
       const parsed = cookieparser.parse(req.headers.cookie)
       user = (parsed.user && JSON.parse(parsed.user)) || null
-      // console.log('user:: ', user)
     }
 
     commit('auth/setUser', user)

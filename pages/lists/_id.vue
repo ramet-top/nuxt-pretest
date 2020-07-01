@@ -6,17 +6,9 @@
       <div v-if="filteredList['0']">
         <v-card :loading="isUpdating">
           <template v-slot:progress>
-            <v-progress-linear
-              absolute
-              color="green lighten-3"
-              height="4"
-              indeterminate
-            ></v-progress-linear>
+            <v-progress-linear absolute color="green lighten-3" height="4" indeterminate></v-progress-linear>
           </template>
-          <v-img
-            height="200"
-            src="https://cdn.vuetifyjs.com/images/cards/dark-beach.jpg"
-          >
+          <v-img height="200" src="https://cdn.vuetifyjs.com/images/cards/dark-beach.jpg">
             <v-row>
               <v-col class="text-right" cols="12">
                 <v-menu bottom left transition="slide-y-transition">
@@ -49,12 +41,7 @@
             <v-container>
               <v-row>
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    :value="filteredList['0'].first_name"
-                    disabled
-                    filled
-                    label="ชื่อ"
-                  ></v-text-field>
+                  <v-text-field :value="filteredList['0'].first_name" disabled filled label="ชื่อ"></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -68,12 +55,7 @@
 
               <v-row>
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    :value="filteredList['0'].age"
-                    disabled
-                    filled
-                    label="อายุ"
-                  ></v-text-field>
+                  <v-text-field :value="filteredList['0'].age" disabled filled label="อายุ"></v-text-field>
                 </v-col>
 
                 <v-col cols="12" md="6">
@@ -87,20 +69,10 @@
               </v-row>
               <v-row>
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="filteredList['0'].email"
-                    disabled
-                    filled
-                    label="อีเมล์"
-                  ></v-text-field>
+                  <v-text-field v-model="filteredList['0'].email" disabled filled label="อีเมล์"></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="filteredList['0'].tel"
-                    filled
-                    disabled
-                    label="เบอร์โทร"
-                  ></v-text-field>
+                  <v-text-field v-model="filteredList['0'].tel" filled disabled label="เบอร์โทร"></v-text-field>
                 </v-col>
 
                 <v-col cols="12" md="6">
@@ -120,19 +92,14 @@
                     hint="แสดงความเห็น"
                   ></v-textarea>
                 </v-col>
-                <v-col> </v-col>
+                <v-col></v-col>
               </v-row>
             </v-container>
           </v-form>
           <v-divider></v-divider>
           <v-card-actions>
-            <v-btn
-              :loading="isUpdating"
-              depressed
-              @click="$router.push('/lists')"
-            >
-              <v-icon left>fas fa-chevron-circle-left</v-icon>
-              Back
+            <v-btn :loading="isUpdating" depressed @click="$router.push('/lists')">
+              <v-icon left>fas fa-chevron-circle-left</v-icon>Back
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn
@@ -141,8 +108,7 @@
               depressed
               @click="editItem(filteredList['0'])"
             >
-              <v-icon left>far fa-edit</v-icon>
-              Update
+              <v-icon left>far fa-edit</v-icon>Update
             </v-btn>
 
             <v-btn
@@ -151,19 +117,13 @@
               color="red accent-4"
               @click="deleteItem(filteredList['0'])"
             >
-              <v-icon left>fas fa-trash</v-icon>
-              Delete
+              <v-icon left>fas fa-trash</v-icon>Delete
             </v-btn>
           </v-card-actions>
         </v-card>
 
         <div>
           <v-dialog v-model="dialog" max-width="500px">
-            <!-- <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on"
-              >เพิ่มข้อมูล</v-btn
-            >
-          </template> -->
             <v-card>
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
@@ -172,30 +132,14 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <!-- <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.id"
-                        label="Test-uuid"
-                        disabled
-                      ></v-text-field>
-                    </v-col> -->
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.first_name"
-                        label="ชื่อ *"
-                      ></v-text-field>
+                      <v-text-field v-model="editedItem.first_name" label="ชื่อ *"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.last_name"
-                        label="นามสกุล *"
-                      ></v-text-field>
+                      <v-text-field v-model="editedItem.last_name" label="นามสกุล *"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.age"
-                        label="อายุ *"
-                      ></v-text-field>
+                      <v-text-field v-model="editedItem.age" label="อายุ *"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="12">
                       <p>เพศ *</p>
@@ -205,16 +149,10 @@
                       </v-radio-group>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.email"
-                        label="email *"
-                      ></v-text-field>
+                      <v-text-field v-model="editedItem.email" label="email *"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.tel"
-                        label="เบอร์โทร *"
-                      ></v-text-field>
+                      <v-text-field v-model="editedItem.tel" label="เบอร์โทร *"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-select
@@ -231,11 +169,7 @@
 
                   <v-row>
                     <v-col cols="12">
-                      <v-textarea
-                        :value="editedItem.remark"
-                        label="remark"
-                        hint="แสดงความเห็น"
-                      ></v-textarea>
+                      <v-textarea :value="editedItem.remark" label="remark" hint="แสดงความเห็น"></v-textarea>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -253,12 +187,10 @@
 
       <div v-else>
         Show Params
-        <p class="red--text">{{ $route.params.id }}</p>
-        Not match
+        <p class="red--text">{{ $route.params.id }}</p>Not match
         <br />
         <v-btn :loading="isUpdating" depressed @click="$router.push('/lists')">
-          <v-icon left>fas fa-chevron-circle-left</v-icon>
-          Back
+          <v-icon left>fas fa-chevron-circle-left</v-icon>Back
         </v-btn>
       </div>
     </v-flex>

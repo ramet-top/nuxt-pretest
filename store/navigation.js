@@ -29,7 +29,6 @@ export const state = () => ({
 
   credentials: {
     name: ''
-    // password: '123456789'
   },
 
   fixed: false
@@ -38,11 +37,9 @@ export const state = () => ({
 export const mutations = {
   setDrawer(state, nawDrawerState) {
     state.drawer = nawDrawerState
-    // console.log('state new drawer', nawDrawerState)
   },
 
   setCredentials(state, newCredentialsState) {
     state.credentials.name = newCredentialsState
-    // console.log('state new newCredentialsState', newCredentialsState)
   }
 }

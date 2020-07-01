@@ -1,4 +1,3 @@
-// import { uuid } from 'vue-uuid'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -108,13 +107,11 @@ export default {
 
     save() {
       if (this.formTitle == 'EditItem') {
-        // console.log('valid:', this.valid, 'title', this.formTitle)
         this.$store.commit('items/save', this.editedItem)
         this.close()
       }
 
       if (this.formTitle == 'NewItem') {
-        // console.log('valid:', this.valid, 'title', this.formTitle)
         if (this.valid) {
           this.$store.commit('items/save', this.editedItem)
           this.close()

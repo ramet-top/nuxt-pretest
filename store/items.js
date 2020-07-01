@@ -1,5 +1,3 @@
-import uuid from 'vue-uuid'
-
 export const state = () => ({
   dialog: false,
   headers: [
@@ -85,7 +83,6 @@ export const mutations = {
   },
 
   // methods
-
   deleteItem(state, newStateItem) {
     const index = state.desserts.indexOf(newStateItem)
     confirm(
@@ -95,13 +92,8 @@ export const mutations = {
 
   save(state, newStateEditedItem) {
     if (state.editedIndex > -1) {
-      // console.log('save if for update')
       Object.assign(state.desserts[state.editedIndex], newStateEditedItem)
     } else {
-      // console.log('save else for create')
-      // if (newStateEditedItem) {
-      //   console.log('validata state else for create items')
-      // }
       state.desserts.push(newStateEditedItem)
     }
   }

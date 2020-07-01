@@ -1,9 +1,7 @@
 <template>
-  <!-- <v-layout column justify-center align-center> </v-layout> -->
   <clientOnly>
     <div class="mt-5">
       <v-flex class="text-center mb-5">
-        <!-- <img src="/v.png" alt="Vuetify.js" class="mb-5" /> -->
         <Logo />
       </v-flex>
 
@@ -38,14 +36,6 @@
                 </v-row>
               </div>
             </v-card-text>
-
-            <!-- <div v-if="submitting" class="text-center">
-              <v-progress-circular
-                :size="30"
-                color="primary"
-                indeterminate
-              ></v-progress-circular>
-            </div> -->
           </v-form>
         </div>
       </v-card>
@@ -69,18 +59,15 @@ export default {
     Notification,
     Logo
   },
-  // middleware: 'guest',
+
   data() {
     return {
-      // btnDis: false,
       submitting: false,
       error: null,
       credentials: {
         name: ''
-        // password: '123456789'
       },
 
-      // show1: false,
       rules: {
         required: value => !!value || 'กรุณากรอกข้อมูล!',
         min: v => v.length >= 2 || 'Min 2 characters'
@@ -98,7 +85,6 @@ export default {
         if (this.$refs.form.validate()) {
           await this.setUser(this.credentials)
           this.$router.push('/lists')
-          // console.log('valid', tthis.$refs.form.validate())
         } else {
           return alert('กรุรากรอกข้อมูลให้ครบ')
         }
