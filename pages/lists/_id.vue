@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex class="text-center">
       <vuetify-logo />
-      <div v-if="filteredList">
+      <div v-if="filteredDesserts['0']">
         <v-card :loading="isUpdating">
           <template v-slot:progress>
             <v-progress-linear
@@ -28,7 +28,7 @@
               <v-row>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    :value="filteredList['0'].first_name"
+                    :value="filteredDesserts['0'].first_name"
                     disabled
                     filled
                     label="ชื่อ"
@@ -36,7 +36,7 @@
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    :value="filteredList['0'].last_name"
+                    :value="filteredDesserts['0'].last_name"
                     disabled
                     filled
                     label="นามสกุล"
@@ -47,7 +47,7 @@
               <v-row>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    :value="filteredList['0'].age"
+                    :value="filteredDesserts['0'].age"
                     disabled
                     filled
                     label="อายุ"
@@ -56,7 +56,7 @@
 
                 <v-col cols="12" md="6">
                   <v-text-field
-                    :value="filteredList['0'].sex == 'M' ? 'ชาย' : 'หญิง'"
+                    :value="filteredDesserts['0'].sex == 'M' ? 'ชาย' : 'หญิง'"
                     disabled
                     filled
                     label="เพศ"
@@ -66,7 +66,7 @@
               <v-row>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    v-model="filteredList['0'].email"
+                    v-model="filteredDesserts['0'].email"
                     disabled
                     filled
                     label="อีเมล์"
@@ -74,7 +74,7 @@
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    v-model="filteredList['0'].tel"
+                    v-model="filteredDesserts['0'].tel"
                     filled
                     disabled
                     label="เบอร์โทร"
@@ -83,7 +83,7 @@
 
                 <v-col cols="12" md="6">
                   <v-text-field
-                    v-model="filteredList['0'].status.text"
+                    v-model="filteredDesserts['0'].status.text"
                     disabled
                     filled
                     label="status"
@@ -92,7 +92,7 @@
 
                 <v-col cols="12" md="6">
                   <v-textarea
-                    v-model="filteredList['0'].remark"
+                    v-model="filteredDesserts['0'].remark"
                     label="remark"
                     disabled
                     hint="แสดงความเห็น"
@@ -116,7 +116,7 @@
               color="blue"
               :loading="isUpdating"
               depressed
-              @click="editItem(filteredList['0'])"
+              @click="parentEditItem(filteredDesserts['0'])"
             >
               <v-icon left>far fa-edit</v-icon>Update
             </v-btn>
@@ -125,7 +125,7 @@
               :loading="isUpdating"
               depressed
               color="red accent-4"
-              @click="deleteItem(filteredList['0'])"
+              @click="parentDeleteItem(filteredDesserts['0'])"
             >
               <v-icon left>fas fa-trash</v-icon>Delete
             </v-btn>
@@ -133,84 +133,10 @@
         </v-card>
 
         <div>
-          <v-dialog v-model="dialog" max-width="500px">
-            <v-card>
-              <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
-              </v-card-title>
-
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.first_name"
-                        label="ชื่อ *"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.last_name"
-                        label="นามสกุล *"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.age"
-                        label="อายุ *"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="12">
-                      <p>เพศ *</p>
-                      <v-radio-group v-model="editedItem.sex" row>
-                        <v-radio labe l="ชาย" value="M"></v-radio>
-                        <v-radio label="หญิง" value="F"></v-radio>
-                      </v-radio-group>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.email"
-                        label="email *"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.tel"
-                        label="เบอร์โทร *"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-select
-                        v-model="editedItem.status"
-                        :items="items"
-                        item-text="text"
-                        item-value="state"
-                        persistent-hint
-                        return-object
-                        label="สถานะ *"
-                      ></v-select>
-                    </v-col>
-                  </v-row>
-
-                  <v-row>
-                    <v-col cols="12">
-                      <v-textarea
-                        :value="editedItem.remark"
-                        label="remark"
-                        hint="แสดงความเห็น"
-                      ></v-textarea>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <AppCreateAndUpDateUser
+            ref="AppCreateAndUpDateUser"
+            :type_id="true"
+          />
         </div>
       </div>
 
@@ -227,16 +153,17 @@
   </v-layout>
 </template>
 <script>
+import _ from 'lodash'
+
 import VuetifyLogo from '~/components/logo/VuetifyLogo.vue'
-// import CreateUserDialog from '~/components/dialog/CreateUserDialog.vue'
-import DialogGlobalFunction from '~/mixins/dialog-global-functoin'
+import AppCreateAndUpDateUser from '~/components/lists/AppCreateAndUpdateUserDialog'
 
 export default {
   middleware: ['isAuth'],
-  mixins: [DialogGlobalFunction],
+
   components: {
-    VuetifyLogo
-    // CreateUserDialog
+    VuetifyLogo,
+    AppCreateAndUpDateUser
   },
 
   data() {
@@ -256,16 +183,25 @@ export default {
   },
 
   methods: {
-    async deleteItem(item) {
-      await this.$router.replace('/lists')
-      this.$store.dispatch('items/setDeleteItem', item)
+    parentEditItem(value) {
+      this.$refs.AppCreateAndUpDateUser.editItem(value)
+    },
+
+    parentDeleteItem(value) {
+      this.$router.replace('/lists')
+      this.$refs.AppCreateAndUpDateUser.deleteItem(value)
     }
   },
 
   computed: {
-    filteredList() {
-      return this.desserts.filter(des => {
-        return des.id == this.$route.params.id
+    desserts() {
+      return this.$store.getters['items/desserts'] || []
+    },
+
+    filteredDesserts() {
+      let id = this.$route.params.id
+      return _.filter(this.desserts, function(des) {
+        return des.id == parseInt(id)
       })
     }
   }

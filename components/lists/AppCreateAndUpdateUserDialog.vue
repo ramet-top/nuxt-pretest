@@ -1,7 +1,13 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on"
+      <v-btn
+        v-if="!type_id"
+        color="primary"
+        dark
+        class="mb-2"
+        v-bind="attrs"
+        v-on="on"
         >เพิ่มข้อมูล</v-btn
       >
     </template>
@@ -107,6 +113,13 @@
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
+  props: {
+    type_id: {
+      type: Boolean,
+      default: false
+    }
+  },
+
   data() {
     return {
       valid: false,
@@ -196,11 +209,6 @@ export default {
 
       this.editedItem = Object.assign({}, item)
       this.dialog = true
-      console.log('editItem in child')
-    },
-
-    passEmit() {
-      // this.$emit('input', this.editItem())
     },
 
     deleteItem(item) {
