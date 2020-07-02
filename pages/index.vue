@@ -1,14 +1,14 @@
 <template>
   <clientOnly>
     <div class="mt-5">
-      <v-flex class="text-center mb-5">
+      <v-flex class="text-center mt-15 mb-5">
         <Logo />
       </v-flex>
 
       <v-card class="mx-auto" max-width="800" raised>
         <div class="container mb-5 px-5">
           <h3 class="text-center">
-            <h1>กรุณากรอกข้อมูล</h1>
+            <h1>Login With Name</h1>
           </h3>
 
           <v-form @submit.prevent="login" ref="form">
@@ -22,7 +22,7 @@
                 placeholder="ชื่อเล่น `John`"
                 outlined
                 dense
-                autofocus
+                rounded
               ></v-text-field>
 
               <div class="text-center">
@@ -38,6 +38,26 @@
           </v-form>
         </div>
       </v-card>
+
+      <v-dialog v-model="DialogWarnning" width="500">
+        <v-card>
+          <v-alert type="warning">
+            I'm a warning alert.
+          </v-alert>
+          <v-card-text>
+            กรุณาเพิ่มข้อมูลให้ครบ!
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="DialogWarnning = false">
+              I accept
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </clientOnly>
 </template>
@@ -59,6 +79,7 @@ export default {
 
   data() {
     return {
+      DialogWarnning: false,
       credentials: {
         name: ''
       },
@@ -77,7 +98,7 @@ export default {
           await this.$store.dispatch('auth/setUser', this.credentials)
           this.$router.push('/lists')
         } else {
-          return alert('กรุณากรอกข้อมูลให้ครบ')
+          this.DialogWarnning = true
         }
       } catch (err) {
         throw err

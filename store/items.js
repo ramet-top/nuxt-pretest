@@ -1,6 +1,7 @@
 export const state = () => ({
   dialog: false,
   editedIndex: -1,
+  dialogDelete: false,
   desserts: [
     {
       id: 1,
@@ -60,6 +61,24 @@ export const state = () => ({
   ]
 })
 
+export const getters = {
+  dialog: state => {
+    return state.dialog
+  },
+  drawer: state => {
+    return state.drawer
+  },
+  editedIndex: state => {
+    return state.editedIndex
+  },
+  desserts: state => {
+    return state.desserts
+  },
+  dialogDelete: state => {
+    return state.dialogDelete
+  }
+}
+
 export const mutations = {
   SET_DIALOG(state, newDialogState) {
     state.dialog = newDialogState
@@ -71,9 +90,11 @@ export const mutations = {
 
   SET_DELETE_ITEM(state, newStateItem) {
     const index = state.desserts.indexOf(newStateItem)
-    confirm(
-      `คุณต้องการที่จะลบข้อมูลของ ${newStateItem.first_name} ใชหรือไม่ ?`
-    ) && state.desserts.splice(index, 1)
+    state.desserts.splice(index, 1)
+
+    // confirm(
+    //   `คุณต้องการที่จะลบข้อมูลของ ${newStateItem.first_name} ใชหรือไม่ ?`
+    // ) && state.desserts.splice(index, 1)
   },
 
   SET_SAVE(state, newStateEditedItem) {
@@ -82,6 +103,10 @@ export const mutations = {
     } else {
       state.desserts.push(newStateEditedItem)
     }
+  },
+
+  SET_DIALOG_DELETE(state, newStateDialogDelete) {
+    state.dialogDelete = newStateDialogDelete
   }
 }
 
@@ -97,20 +122,8 @@ export const actions = {
   },
   setSave({ commit }, newStateEditedItem) {
     commit('SET_SAVE', newStateEditedItem)
-  }
-}
-
-export const getters = {
-  dialog: state => {
-    return state.dialog
   },
-  drawer: state => {
-    return state.drawer
-  },
-  editedIndex: state => {
-    return state.editedIndex
-  },
-  desserts: state => {
-    return state.desserts
+  setDialogDelete({ commit }, newStateDialogDelete) {
+    commit('SET_DIALOG_DELETE', newStateDialogDelete)
   }
 }

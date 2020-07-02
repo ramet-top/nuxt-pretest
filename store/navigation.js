@@ -31,6 +31,24 @@ export const state = () => ({
   ]
 })
 
+export const getters = {
+  drawer: state => {
+    return state.drawer
+  },
+  fixed: state => {
+    return state.fixed
+  },
+  dialog: state => {
+    return state.dialog
+  },
+  title: state => {
+    return state.title
+  },
+  items: state => {
+    return state.items
+  }
+}
+
 export const mutations = {
   SET_DRAWER(state, nawDrawerState) {
     state.drawer = nawDrawerState
@@ -54,23 +72,5 @@ export const actions = {
   },
   setDialog({ commit }, newDialogState) {
     commit('SET_DIALOG', newDialogState)
-  }
-}
-
-export const getters = {
-  drawer: state => {
-    return state.drawer
-  },
-  fixed: state => {
-    return state.fixed
-  },
-  dialog: state => {
-    return state.dialog
-  },
-  title: state => {
-    return state.title
-  },
-  items: state => {
-    return state.items
   }
 }

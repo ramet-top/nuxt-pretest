@@ -2,6 +2,12 @@ import Cookies from 'js-cookie'
 
 export const state = () => {}
 
+export const getters = {
+  loggedInUser: state => {
+    return state.user
+  }
+}
+
 export const mutations = {
   SET_USER(state, user) {
     state.user = user
@@ -19,11 +25,5 @@ export const actions = {
   },
   setUserLogout({ commit }) {
     commit('SET_USER_LOGOUT')
-  }
-}
-
-export const getters = {
-  loggedInUser: state => {
-    return state.user
   }
 }

@@ -1,8 +1,8 @@
 <template>
   <v-layout>
     <v-flex class="text-center">
-      <vuetify-logo />
-      <div v-if="filteredDesserts['0']">
+      <vuetify-logo class="my-5" />
+      <div v-if="findUser">
         <v-card :loading="isUpdating">
           <template v-slot:progress>
             <v-progress-linear
@@ -23,22 +23,35 @@
               </v-col>
             </v-row>
           </v-img>
+
           <v-form>
             <v-container>
               <v-row>
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    v-model="findUser.email"
+                    disabled
+                    filled
+                    rounded
+                    label="อีเมล์"
+                  ></v-text-field> </v-col
+              ></v-row>
+              <v-row>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    :value="filteredDesserts['0'].first_name"
+                    :value="findUser.first_name"
                     disabled
                     filled
                     label="ชื่อ"
+                    rounded
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    :value="filteredDesserts['0'].last_name"
+                    :value="findUser.last_name"
                     disabled
                     filled
+                    rounded
                     label="นามสกุล"
                   ></v-text-field>
                 </v-col>
@@ -47,35 +60,30 @@
               <v-row>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    :value="filteredDesserts['0'].age"
+                    :value="findUser.sex == 'M' ? 'ชาย' : 'หญิง'"
                     disabled
                     filled
-                    label="อายุ"
+                    rounded
+                    label="เพศ"
                   ></v-text-field>
                 </v-col>
 
                 <v-col cols="12" md="6">
                   <v-text-field
-                    :value="filteredDesserts['0'].sex == 'M' ? 'ชาย' : 'หญิง'"
+                    :value="findUser.age"
                     disabled
                     filled
-                    label="เพศ"
+                    rounded
+                    label="อายุ"
                   ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    v-model="filteredDesserts['0'].email"
-                    disabled
+                    v-model="findUser.tel"
                     filled
-                    label="อีเมล์"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="filteredDesserts['0'].tel"
-                    filled
+                    rounded
                     disabled
                     label="เบอร์โทร"
                   ></v-text-field>
@@ -83,40 +91,40 @@
 
                 <v-col cols="12" md="6">
                   <v-text-field
-                    v-model="filteredDesserts['0'].status.text"
+                    v-model="findUser.status.text"
                     disabled
                     filled
+                    rounded
                     label="status"
                   ></v-text-field>
                 </v-col>
-
-                <v-col cols="12" md="6">
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="12">
                   <v-textarea
-                    v-model="filteredDesserts['0'].remark"
+                    v-model="findUser.remark"
                     label="remark"
                     disabled
+                    filled
+                    rounded
                     hint="แสดงความเห็น"
                   ></v-textarea>
                 </v-col>
-                <v-col></v-col>
               </v-row>
             </v-container>
           </v-form>
           <v-divider></v-divider>
           <v-card-actions>
-            <v-btn
-              :loading="isUpdating"
-              depressed
-              @click="$router.push('/lists')"
-            >
+            <v-btn :loading="isUpdating" depressed to="/lists">
               <v-icon left>fas fa-chevron-circle-left</v-icon>Back
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn
+              dark
               color="blue"
               :loading="isUpdating"
               depressed
-              @click="parentEditItem(filteredDesserts['0'])"
+              @click="parentEditItem(findUser)"
             >
               <v-icon left>far fa-edit</v-icon>Update
             </v-btn>
@@ -124,8 +132,9 @@
             <v-btn
               :loading="isUpdating"
               depressed
+              dark
               color="red accent-4"
-              @click="parentDeleteItem(filteredDesserts['0'])"
+              @click="parentDeleteItem(findUser)"
             >
               <v-icon left>fas fa-trash</v-icon>Delete
             </v-btn>
@@ -133,8 +142,8 @@
         </v-card>
 
         <div>
-          <AppCreateAndUpDateUser
-            ref="AppCreateAndUpDateUser"
+          <DialogCreateUpdateUser
+            ref="DialogCreateUpdateUser"
             :type_id="true"
           />
         </div>
@@ -145,7 +154,7 @@
         <p class="red--text">{{ $route.params.id }}</p>
         Not match
         <br />
-        <v-btn :loading="isUpdating" depressed @click="$router.push('/lists')">
+        <v-btn :loading="isUpdating" depressed to="/lists">
           <v-icon left>fas fa-chevron-circle-left</v-icon>Back
         </v-btn>
       </div>
@@ -153,17 +162,15 @@
   </v-layout>
 </template>
 <script>
-import _ from 'lodash'
-
 import VuetifyLogo from '~/components/logo/VuetifyLogo.vue'
-import AppCreateAndUpDateUser from '~/components/lists/AppCreateAndUpdateUserDialog'
+import DialogCreateUpdateUser from '~/components/lists/DialogCreateUpdateUser'
 
 export default {
   middleware: ['isAuth'],
 
   components: {
     VuetifyLogo,
-    AppCreateAndUpDateUser
+    DialogCreateUpdateUser
   },
 
   data() {
@@ -184,12 +191,11 @@ export default {
 
   methods: {
     parentEditItem(value) {
-      this.$refs.AppCreateAndUpDateUser.editItem(value)
+      this.$refs.DialogCreateUpdateUser.editItem(value)
     },
 
-    parentDeleteItem(value) {
-      this.$router.replace('/lists')
-      this.$refs.AppCreateAndUpDateUser.deleteItem(value)
+    async parentDeleteItem(value) {
+      await this.$refs.DialogCreateUpdateUser.deleteItem(value)
     }
   },
 
@@ -198,11 +204,9 @@ export default {
       return this.$store.getters['items/desserts'] || []
     },
 
-    filteredDesserts() {
-      let id = this.$route.params.id
-      return _.filter(this.desserts, function(des) {
-        return des.id == parseInt(id)
-      })
+    findUser() {
+      const id = this.$route.params.id
+      return this.desserts.find(user => parseInt(user.id) === parseInt(id))
     }
   }
 }

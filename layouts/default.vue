@@ -2,6 +2,10 @@
   <v-app dark>
     <v-navigation-drawer v-model="drawer" fixed app>
       <v-list>
+        <div class="text-center my-auto">
+          <VuetifyLogo />
+        </div>
+
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -18,7 +22,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar fixed app>
+    <v-app-bar fixed app dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
 
@@ -34,6 +38,7 @@
           </template>
           <v-card>
             <v-card-title>
+              <v-icon left>fas fa-user</v-icon>
               <span class="headline">User Profile</span>
             </v-card-title>
             <v-card-text>
@@ -44,6 +49,8 @@
                       v-model="credentials.name"
                       label="แก้ไขชื่อ"
                       required
+                      outlined
+                      rounded
                       autofocus
                     ></v-text-field>
                   </v-col>
@@ -77,9 +84,14 @@
 </template>
 
 <script>
+import VuetifyLogo from '~/components/logo/VuetifyLogo.vue'
 export default {
   data() {
     return {}
+  },
+
+  components: {
+    VuetifyLogo
   },
 
   methods: {

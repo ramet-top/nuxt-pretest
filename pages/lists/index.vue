@@ -2,15 +2,15 @@
   <v-layout>
     <clientOnly>
       <v-flex>
-        <div class="text-center">
-          <vuetify-logo />
+        <div class="text-center mt-15 mb-5">
           <h1>รายชื่อลูกค้า</h1>
         </div>
+
         <v-data-table
           :headers="headers"
           :items="desserts"
           sort-by="age"
-          class="elevation-1"
+          class="elevation-2"
         >
           <template v-slot:top>
             <v-toolbar flat color="white">
@@ -18,7 +18,7 @@
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
 
-              <AppCreateAndUpDateUser ref="AppCreateAndUpDateUser" />
+              <DialogCreateUpdateUser ref="DialogCreateUpdateUser" />
             </v-toolbar>
           </template>
 
@@ -34,9 +34,9 @@
             >
           </template>
 
-          <template v-slot:item.sex="{ item }">{{
-            item.sex == 'M' ? 'ชาย' : 'หญิง'
-          }}</template>
+          <template v-slot:item.sex="{ item }">
+            {{ item.sex == 'M' ? 'ชาย' : 'หญิง' }}
+          </template>
 
           <template v-slot:item.status="{ item }">
             <v-chip :color="getColor(item.status)" dark>{{
@@ -60,15 +60,13 @@
   </v-layout>
 </template>
 <script>
-import VuetifyLogo from '~/components/logo/VuetifyLogo.vue'
-import AppCreateAndUpDateUser from '~/components/lists/AppCreateAndUpdateUserDialog'
+import DialogCreateUpdateUser from '~/components/lists/DialogCreateUpdateUser'
 
 export default {
   middleware: 'isAuth',
 
   components: {
-    VuetifyLogo,
-    AppCreateAndUpDateUser
+    DialogCreateUpdateUser
   },
 
   head() {
@@ -120,11 +118,11 @@ export default {
     },
 
     parentEditItem(value) {
-      this.$refs.AppCreateAndUpDateUser.editItem(value)
+      this.$refs.DialogCreateUpdateUser.editItem(value)
     },
 
     parentDeleteItem(value) {
-      this.$refs.AppCreateAndUpDateUser.deleteItem(value)
+      this.$refs.DialogCreateUpdateUser.deleteItem(value)
     }
   }
 }
